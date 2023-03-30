@@ -1,12 +1,19 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/instadb?serverTimezone=Asia/Seoul
+    username: jihwan
+    password: ENC(fZCdT3wgQWhqylrNxoG63OrUf6PM0ZbFIwB3xO3Z0hx2bDXhI4LMyj6NowfS/hVm)
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         show_sql: true
+server:
+  port: 8080
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}

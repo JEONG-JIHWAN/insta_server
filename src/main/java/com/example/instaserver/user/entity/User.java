@@ -18,11 +18,10 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
     @Column(columnDefinition = "varchar(80)", unique = true, nullable = false)
     String nickname;
-    @Lob
-    @Column(columnDefinition="MEDIUMBLOB")
-    byte[] profileImage;
 
-    public static User newUser(SignUpRequest signUpRequest) throws IOException {
-        return new User(signUpRequest.getNickname(), signUpRequest.getProfile_image().getBytes());
+    String profileImageUrl;
+
+    public static User newUser(String nickname, String profileImageUrl){
+        return new User(nickname, profileImageUrl);
     }
 }

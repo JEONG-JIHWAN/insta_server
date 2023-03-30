@@ -12,6 +12,6 @@ public class UserDto {
     public UserDto(User user) {
         this.id = user.getId();
         this.nickname = user.getNickname();
-        this.profileImageUrl = user.getProfileImage().toString();
+        this.profileImageUrl = user.getProfileImageUrl();
     }
 }

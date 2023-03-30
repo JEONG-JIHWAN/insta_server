@@ -17,3 +17,16 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     password: ${JASYPT_PASSWORD}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ENC(no1gfK9aqp/WjBLQ7fJ48orCph+ZvIjJvZWGVAml5aJGWkZZJTFwtyoqMD+Efe80Fth2IqljbhUCPSmPNNEt0w==)
+      secret-key: ENC(7jieq6Q0EJBclEMmyywKn0dFRL7VWZI7YeTXTsb3mg8EATkf5FIXGTBYccyXY/SFaH/zECDWFqN4kyW8dS5CgKW9QFWl/tkpUAVC5eCI+8w=)
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    s3:
+      bucket: numble-insta-bucket

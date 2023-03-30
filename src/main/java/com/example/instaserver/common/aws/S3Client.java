@@ -26,8 +26,6 @@ public class S3Client {
     public String uploadImage(MultipartFile multipartFile) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
-        System.out.println(multipartFile.getContentType());
-        System.out.println(multipartFile.getOriginalFilename());
         String imageUrl = upload(bucketName, multipartFile.getOriginalFilename(), multipartFile.getInputStream(), metadata);
         return imageUrl;
     }

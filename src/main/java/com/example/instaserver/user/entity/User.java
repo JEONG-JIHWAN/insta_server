@@ -19,9 +19,11 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "varchar(80)", unique = true, nullable = false)
     String nickname;
 
+    String password;
+
     String profileImageUrl;
 
-    public static User newUser(String nickname, String profileImageUrl){
-        return new User(nickname, profileImageUrl);
+    public static User newUser(String nickname, String encodedPassword, String profileImageUrl){
+        return new User(nickname, encodedPassword, profileImageUrl);
     }
 }

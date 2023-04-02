@@ -6,7 +6,7 @@ spring:
     password: ENC(fZCdT3wgQWhqylrNxoG63OrUf6PM0ZbFIwB3xO3Z0hx2bDXhI4LMyj6NowfS/hVm)
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
@@ -30,3 +30,10 @@ cloud:
       auto: false
     s3:
       bucket: numble-insta-bucket
+
+jwt:
+  token:
+    header: Authorization
+    issuer: numblejihwan
+    client-secret: ENC(4z4+L0WVk8v4BgKGW+By9EK5g7J659t0Hb43rl804bKmgowzNvHcPI04QApzX+PQ)
+    expirySeconds: 60

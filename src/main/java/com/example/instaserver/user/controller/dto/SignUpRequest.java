@@ -14,7 +14,7 @@ public class SignUpRequest {
     @NotBlank
     @Size(max = 50, min = 1)
     private String nickname;
-
+    private String password;
     private MultipartFile profile_image;
 
 }

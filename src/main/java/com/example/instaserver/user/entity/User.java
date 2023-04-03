@@ -2,6 +2,7 @@ package com.example.instaserver.user.entity;
 
 import com.example.instaserver.common.entity.BaseEntity;
 import com.example.instaserver.follow.entity.Follow;
+import com.example.instaserver.user.controller.dto.UpdateProfileRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -38,6 +39,11 @@ public class User extends BaseEntity {
 
     public static User newUser(String nickname, String encodedPassword, String profileImageUrl){
         return new User(nickname, encodedPassword, profileImageUrl, 0 ,0);
+    }
+
+    public void update(String nickname, String profileImageUrl){
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public int plusFollowingCount(){

@@ -30,7 +30,11 @@ public class UserService {
         return new UserDto(userRepository.save(User.newUser(newUserNickname, encodedPassword, profileImageUrl)));
     }
 
-    public User findByNickname(String nickname) {
+    public User getUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 사용자가 존재하지 않습니다."));
+    }
+
+    public User getUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname).orElseThrow(() -> new NotFoundException("해당 사용자가 존재하지 않습니다."));
     }
 

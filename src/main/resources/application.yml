@@ -6,10 +6,11 @@ spring:
     password: ENC(fZCdT3wgQWhqylrNxoG63OrUf6PM0ZbFIwB3xO3Z0hx2bDXhI4LMyj6NowfS/hVm)
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
+    open-in-view: false
 server:
   port: 8080
 

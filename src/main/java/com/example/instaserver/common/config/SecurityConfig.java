@@ -22,6 +22,7 @@ public class SecurityConfig {
     private static final String API_PREFIX = "/api";
     private final JwtProvider jwtProvider;
     private final JwtConfig jwtConfig;
+    private final CorsConfig corsConfig;
     private final UserService userService;
 
     @Bean
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .rememberMe().disable()
+                .addFilter(corsConfig.corsFilter())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

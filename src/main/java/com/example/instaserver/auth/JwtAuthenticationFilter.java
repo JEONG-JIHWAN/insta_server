@@ -12,13 +12,14 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
-    private static final String TOKEN_PREFIX = "Bearer";
+    private static final String TOKEN_PREFIX = "Bearer ";
     private final String headerKey;
     private final JwtProvider jwtProvider;
     private final UserService userService;
@@ -32,8 +33,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             String token = getToken(request);
             if(token != null) {
                 String nickname = jwtProvider.verity(token).getClaim("nickname").asString();
-                User byNickname = userService.findByNickname(nickname);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(byNickname, null);
+                System.out.println(nickname);
+                User byNickname = userService.getUserByNickname(nickname);
+                PrincipalDetails principalDetails = new PrincipalDetails(byNickname);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

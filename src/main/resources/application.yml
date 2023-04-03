@@ -6,7 +6,7 @@ spring:
     password: ENC(fZCdT3wgQWhqylrNxoG63OrUf6PM0ZbFIwB3xO3Z0hx2bDXhI4LMyj6NowfS/hVm)
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true

@@ -11,6 +11,9 @@ spring:
       hibernate:
         show_sql: true
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
 server:
   port: 8080
 

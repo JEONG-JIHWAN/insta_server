@@ -4,6 +4,7 @@ import com.example.instaserver.common.aws.S3Client;
 import com.example.instaserver.common.exception.NotFoundException;
 import com.example.instaserver.user.controller.dto.ProfileDto;
 import com.example.instaserver.user.controller.dto.SignUpRequest;
+import com.example.instaserver.user.controller.dto.UpdateProfileRequest;
 import com.example.instaserver.user.controller.dto.UserDto;
 import com.example.instaserver.user.entity.User;
 import com.example.instaserver.user.repository.UserRepository;
@@ -34,6 +35,14 @@ public class UserService {
 
     public ProfileDto getProfile(Long userId){
         return ProfileDto.from(getUser(userId));
+    }
+
+    @Transactional
+    public UserDto update(User user, UpdateProfileRequest updateProfileRequest) throws IOException {
+        User loginUser = getUser(user.getId());
+        String newProfileImageUrl = s3Client.uploadImage(updateProfileRequest.getProfileImage());
+        loginUser.update(updateProfileRequest.getNickname(), newProfileImageUrl);
+        return new UserDto(loginUser);
     }
 
     public User getUser(Long id) {

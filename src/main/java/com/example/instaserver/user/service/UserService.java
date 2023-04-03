@@ -2,6 +2,7 @@ package com.example.instaserver.user.service;
 
 import com.example.instaserver.common.aws.S3Client;
 import com.example.instaserver.common.exception.NotFoundException;
+import com.example.instaserver.user.controller.dto.ProfileDto;
 import com.example.instaserver.user.controller.dto.SignUpRequest;
 import com.example.instaserver.user.controller.dto.UserDto;
 import com.example.instaserver.user.entity.User;
@@ -14,13 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final S3Client s3Client;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UserDto join(SignUpRequest signUpRequest) throws IOException {
         String newUserNickname = signUpRequest.getNickname();
         MultipartFile newUserProfileImage = signUpRequest.getProfile_image();
@@ -28,6 +30,10 @@ public class UserService {
         String profileImageUrl = s3Client.uploadImage(newUserProfileImage);
         String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
         return new UserDto(userRepository.save(User.newUser(newUserNickname, encodedPassword, profileImageUrl)));
+    }
+
+    public ProfileDto getProfile(Long userId){
+        return ProfileDto.from(getUser(userId));
     }
 
     public User getUser(Long id) {

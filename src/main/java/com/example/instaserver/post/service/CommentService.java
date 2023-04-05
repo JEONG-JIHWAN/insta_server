@@ -1,5 +1,6 @@
 package com.example.instaserver.post.service;
 
+import com.example.instaserver.common.exception.NotFoundException;
 import com.example.instaserver.post.controller.dto.comment.CommentRequest;
 import com.example.instaserver.post.controller.dto.comment.CommentResponse;
 import com.example.instaserver.post.entity.Comment;
@@ -15,8 +16,8 @@ import org.springframework.util.Assert;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentService {
-    private final CommentRepository commentRepository;
     private final PostService postService;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CommentResponse write(User user, CommentRequest commentRequest) {
@@ -27,5 +28,10 @@ public class CommentService {
         Post post = postService.getPost(commentRequest.getPostId());
         Comment newComment = commentRepository.save(new Comment(user, post, commentRequest.getContent()));
         return CommentResponse.from(newComment);
+    }
+
+    public Comment getComment(Long commentId){
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.instaserver.post.controller.dto;
+package com.example.instaserver.post.controller.dto.post;
 
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
 package com.example.instaserver.post.controller;
 
 import com.example.instaserver.auth.CurrentUser;
-import com.example.instaserver.post.controller.dto.PostRequest;
-import com.example.instaserver.post.controller.dto.PostResponse;
+import com.example.instaserver.post.controller.dto.post.PostRequest;
+import com.example.instaserver.post.controller.dto.post.PostResponse;
 import com.example.instaserver.post.service.PostService;
 import com.example.instaserver.user.entity.User;
 import java.io.IOException;

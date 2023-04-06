@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class ReplyRequest {
+public class ReplyCreateRequest {
     @JsonProperty("comment_id")
     private Long commentId;
     private String content;

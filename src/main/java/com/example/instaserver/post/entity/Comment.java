@@ -3,6 +3,7 @@ package com.example.instaserver.post.entity;
 import com.example.instaserver.common.entity.BaseEntity;
 import com.example.instaserver.user.entity.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
@@ -15,10 +16,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
     private String contents;
@@ -28,4 +29,5 @@ public class Comment extends BaseEntity {
         this.post = post;
         this.contents = contents;
     }
+
 }

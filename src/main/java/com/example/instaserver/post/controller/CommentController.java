@@ -1,12 +1,14 @@
 package com.example.instaserver.post.controller;
 
 import com.example.instaserver.auth.CurrentUser;
+import com.example.instaserver.post.controller.dto.comment.CommentDeleteDto;
 import com.example.instaserver.post.controller.dto.comment.CommentRequest;
 import com.example.instaserver.post.controller.dto.comment.CommentResponse;
 import com.example.instaserver.post.controller.dto.comment.CommentUpdateRequest;
 import com.example.instaserver.post.service.CommentService;
 import com.example.instaserver.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,11 @@ public class CommentController {
     @PutMapping("comment")
     public CommentResponse updateComment(@CurrentUser User user, @RequestBody CommentUpdateRequest commentUpdateRequest) {
         return commentService.update(user, commentUpdateRequest);
+    }
+
+    @DeleteMapping("comment")
+    public CommentDeleteDto deleteComment(@CurrentUser User user, @RequestBody CommentDeleteDto commentDeleteDto) {
+        return commentService.delete(user, commentDeleteDto);
     }
 
 }

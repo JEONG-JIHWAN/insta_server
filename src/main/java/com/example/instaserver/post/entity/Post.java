@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Post extends BaseEntity {
     private String contents;
     private String profileImageUrl;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(User user, String contents, String profileImageUrl) {
         this.user = user;

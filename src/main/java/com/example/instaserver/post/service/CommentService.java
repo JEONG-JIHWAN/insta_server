@@ -1,6 +1,7 @@
 package com.example.instaserver.post.service;
 
 import com.example.instaserver.common.exception.NotFoundException;
+import com.example.instaserver.post.controller.dto.comment.CommentDeleteDto;
 import com.example.instaserver.post.controller.dto.comment.CommentRequest;
 import com.example.instaserver.post.controller.dto.comment.CommentResponse;
 import com.example.instaserver.post.controller.dto.comment.CommentUpdateRequest;
@@ -8,6 +9,7 @@ import com.example.instaserver.post.entity.Comment;
 import com.example.instaserver.post.entity.Post;
 import com.example.instaserver.post.repository.CommentRepository;
 import com.example.instaserver.user.entity.User;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ public class CommentService {
         Assert.notNull(user, "사용자가 존재하지 않습니다.");
         Assert.notNull(commentRequest.getContent(), "컨텐츠가 존재하지 않습니다.");
         Post post = postService.getPost(commentRequest.getPostId());
+        post.getComments().stream().forEach(s -> System.out.println(s));
         Comment newComment = commentRepository.save(new Comment(user, post, commentRequest.getContent()));
         return CommentResponse.from(newComment);
     }
@@ -36,6 +39,17 @@ public class CommentService {
         Comment comment = getComment(commentUpdateRequest.getId());
         comment.updateContents(commentUpdateRequest.getContent());
         return CommentResponse.from(comment);
+    }
+
+    @Transactional
+    public CommentDeleteDto delete(User user, CommentDeleteDto commentDeleteDto) {
+        Assert.notNull(user, "사용자가 존재하지 않습니다.");
+        Assert.notNull(commentDeleteDto.getId(), "해당 댓글이 존재하지 않습니다.");
+        Comment comment = getComment(commentDeleteDto.getId());
+
+        Assert.isTrue(user.getId() == comment.getUser().getId(), "해당 댓글을 삭제 할 수 없습니다.");
+        commentRepository.delete(comment);
+        return new CommentDeleteDto(commentDeleteDto.getId());
     }
 
     public Comment getComment(Long commentId){

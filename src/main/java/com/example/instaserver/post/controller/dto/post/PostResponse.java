@@ -1,12 +1,14 @@
 package com.example.instaserver.post.controller.dto.post;
 
 import com.example.instaserver.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
 public class PostResponse {
     private Long id;
 
+    @JsonProperty("image_url")
     private String imageUrl;
 
     private String content;

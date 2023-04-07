@@ -1,6 +1,7 @@
 package com.example.instaserver.post.entity;
 
 import com.example.instaserver.common.entity.BaseEntity;
+import com.example.instaserver.post.controller.dto.post.PostUpdateRequest;
 import com.example.instaserver.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -33,8 +34,10 @@ public class Post extends BaseEntity {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public void addComment(Comment comment){
-        comments.add(comment);
+
+    public void update(String contents, String profileImageUrl) {
+        this.contents = contents;
+        this.profileImageUrl = profileImageUrl;
     }
 
 }

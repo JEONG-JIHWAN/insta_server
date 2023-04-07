@@ -9,7 +9,6 @@ import com.example.instaserver.post.entity.Comment;
 import com.example.instaserver.post.entity.Post;
 import com.example.instaserver.post.repository.CommentRepository;
 import com.example.instaserver.user.entity.User;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,6 @@ public class CommentService {
         Assert.notNull(user, "사용자가 존재하지 않습니다.");
         Assert.notNull(commentRequest.getContent(), "컨텐츠가 존재하지 않습니다.");
         Post post = postService.getPost(commentRequest.getPostId());
-        post.getComments().stream().forEach(s -> System.out.println(s));
         Comment newComment = commentRepository.save(new Comment(user, post, commentRequest.getContent()));
         return CommentResponse.from(newComment);
     }
@@ -37,6 +35,7 @@ public class CommentService {
         Assert.notNull(user, "사용자가 존재하지 않습니다.");
         Assert.notNull(commentUpdateRequest.getId(), "해당 댓글이 존재하지 않습니다.");
         Comment comment = getComment(commentUpdateRequest.getId());
+        Assert.isTrue(user.getId() == comment.getUser().getId(), "해당 댓글을 삭제 할 수 없습니다.");
         comment.updateContents(commentUpdateRequest.getContent());
         return CommentResponse.from(comment);
     }
@@ -46,7 +45,6 @@ public class CommentService {
         Assert.notNull(user, "사용자가 존재하지 않습니다.");
         Assert.notNull(commentDeleteDto.getId(), "해당 댓글이 존재하지 않습니다.");
         Comment comment = getComment(commentDeleteDto.getId());
-
         Assert.isTrue(user.getId() == comment.getUser().getId(), "해당 댓글을 삭제 할 수 없습니다.");
         commentRepository.delete(comment);
         return new CommentDeleteDto(commentDeleteDto.getId());

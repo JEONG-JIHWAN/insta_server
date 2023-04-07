@@ -3,6 +3,8 @@ package com.example.instaserver.post.controller;
 import com.example.instaserver.auth.CurrentUser;
 import com.example.instaserver.post.controller.dto.post.FeedRequest;
 import com.example.instaserver.post.controller.dto.post.FeedResponse;
+import com.example.instaserver.post.controller.dto.post.PostDeleteRequest;
+import com.example.instaserver.post.controller.dto.post.PostDeleteResponse;
 import com.example.instaserver.post.controller.dto.post.PostRequest;
 import com.example.instaserver.post.controller.dto.post.PostResponse;
 import com.example.instaserver.post.controller.dto.post.PostUpdateRequest;
@@ -11,6 +13,7 @@ import com.example.instaserver.post.service.PostService;
 import com.example.instaserver.user.entity.User;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +37,11 @@ public class PostController {
     public PostResponse updatePost(@CurrentUser User user, @ModelAttribute PostUpdateRequest postUpdateRequest)
             throws IOException {
         return postService.update(user, postUpdateRequest);
+    }
+
+    @DeleteMapping(path = "post")
+    public PostDeleteResponse deleteResponse(@CurrentUser User user, @RequestBody PostDeleteRequest postDeleteRequest) {
+        return postService.delete(user, postDeleteRequest);
     }
 
 /**

@@ -11,11 +11,14 @@ import com.example.instaserver.post.controller.dto.post.PostRequest;
 import com.example.instaserver.post.controller.dto.post.PostResponse;
 import com.example.instaserver.post.controller.dto.post.PostUpdateRequest;
 import com.example.instaserver.post.entity.Post;
+import com.example.instaserver.post.repository.CommentRepository;
 import com.example.instaserver.post.repository.PostRepository;
+import com.example.instaserver.post.repository.ReplyRepository;
 import com.example.instaserver.user.entity.User;
 import com.example.instaserver.user.repository.UserRepository;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -28,6 +31,8 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final ReplyRepository replyRepository;
     private final S3Client s3Client;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
@@ -70,6 +75,7 @@ public class PostService {
         Assert.isTrue(user.getId().equals(feedRequest.getUserId()), "different userId");
         List<User> follower = followRepository.findFollowerByFollowing(user);
         Slice<Post> posts = postRepository.findAll(feedRequest.getCursor(), follower, pageable);
+        posts.stream().map(post -> commentRepository.findAllWithUserByPost(post)).collect(Collectors.toList());
         return FeedResponse.from(posts);
     }
 

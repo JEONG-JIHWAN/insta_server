@@ -29,7 +29,7 @@ public final class JwtProvider {
         Date now = new Date();
         String jwtToken = JWT.create()
                 .withIssuer(issuer)
-                .withExpiresAt(new Date(now.getTime() + expirySeconds * 1_000L))
+                .withExpiresAt(new Date(now.getTime() + expirySeconds * 1000 * 60))
                 .withClaim("nickname", principalDetails.getUsername())
                 .sign(algorithm);
         return jwtToken;

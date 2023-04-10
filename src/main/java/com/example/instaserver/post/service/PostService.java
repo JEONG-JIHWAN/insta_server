@@ -3,6 +3,8 @@ package com.example.instaserver.post.service;
 import com.example.instaserver.common.aws.S3Client;
 import com.example.instaserver.common.exception.NotFoundException;
 import com.example.instaserver.follow.repository.FollowRepository;
+import com.example.instaserver.post.controller.dto.post.FeedRequest;
+import com.example.instaserver.post.controller.dto.post.FeedResponse;
 import com.example.instaserver.post.controller.dto.post.PostDeleteRequest;
 import com.example.instaserver.post.controller.dto.post.PostDeleteResponse;
 import com.example.instaserver.post.controller.dto.post.PostRequest;
@@ -13,7 +15,10 @@ import com.example.instaserver.post.repository.PostRepository;
 import com.example.instaserver.user.entity.User;
 import com.example.instaserver.user.repository.UserRepository;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -60,16 +65,14 @@ public class PostService {
         return PostDeleteResponse.from(post);
     }
 
-    /**
     @Transactional
-    public FeedResponse findPosts(User user, FeedRequest feedRequest) {
+    public FeedResponse findPosts(User user, FeedRequest feedRequest, Pageable pageable) {
         Assert.isTrue(user.getId().equals(feedRequest.getUserId()), "different userId");
         List<User> follower = followRepository.findFollowerByFollowing(user);
-        follower.stream().map(f -> postRepository.findAllWithUserByUser(f));
-        });
-
+        Slice<Post> posts = postRepository.findAll(feedRequest.getCursor(), follower, pageable);
+        return FeedResponse.from(posts);
     }
-    **/
+
 
     public Post getPost(Long postId){
         return postRepository.findById(postId)

@@ -13,6 +13,10 @@ import com.example.instaserver.post.service.PostService;
 import com.example.instaserver.user.entity.User;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 @RequiredArgsConstructor
 public class PostController {
+    private static final int PAGE_SIZE = 2;
     private final PostService postService;
 
     @PostMapping(path = "post")
@@ -44,10 +49,9 @@ public class PostController {
         return postService.delete(user, postDeleteRequest);
     }
 
-/**
     @GetMapping(path = "feed")
-    public FeedResponse feed(@CurrentUser User user, FeedRequest feedRequest) {
-        return postService.findPosts(user, feedRequest);
+    public FeedResponse feed(@CurrentUser User user, @RequestBody FeedRequest feedRequest,
+                             @PageableDefault(size = PAGE_SIZE, sort = "updated_at", direction = Direction.DESC) Pageable pageable) {
+        return postService.findPosts(user, feedRequest, pageable);
     }
-    **/
 }

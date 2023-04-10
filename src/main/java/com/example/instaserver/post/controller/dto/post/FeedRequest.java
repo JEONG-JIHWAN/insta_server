@@ -7,4 +7,5 @@ import lombok.Getter;
 public class FeedRequest {
     @JsonProperty("user_id")
     private Long userId;
+    private Long cursor;
 }

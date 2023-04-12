@@ -10,6 +10,4 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     Optional<Reply> findById(Long id);
-    @Query("select r from Reply r join fetch User u where r.comment = :comment")
-    List<Reply> findAllWithUserByComment(Comment comment);
 }

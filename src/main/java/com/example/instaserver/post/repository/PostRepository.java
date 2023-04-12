@@ -10,6 +10,4 @@ import org.springframework.data.jpa.repository.Query;
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     Optional<Post> findById(Long id);
 
-    @Query("select p from Post p join fetch User u where p.user=:user")
-    List<Post> findAllWithUserByUser(User user);
 }

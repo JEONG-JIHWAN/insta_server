@@ -1,12 +1,14 @@
 package com.example.instaserver.follow.controller.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class FollowResponse {
-    private long userId;
+    @NotNull(message = "userId must be provided")
+    private Long userId;
 
-    public FollowResponse(long userId) {
+    public FollowResponse(Long userId) {
         this.userId = userId;
     }
 }

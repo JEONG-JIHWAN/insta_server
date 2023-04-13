@@ -8,6 +8,7 @@ import com.example.instaserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,6 +19,7 @@ public class FollowService {
 
     @Transactional
     public FollowResponse follow(User user, Long followId) {
+        Assert.notNull(user.getId(), "userId must be provided");
         User loginUser = userService.getUser(user.getId());
         User followUser = userService.getUser(followId);
 
@@ -32,6 +34,7 @@ public class FollowService {
 
     @Transactional
     public FollowResponse unFollow(User user, Long unFollowId) {
+        Assert.notNull(user.getId(), "userId must be provided");
         User loginUser = userService.getUser(user.getId());
         User unFollowUser = userService.getUser(unFollowId);
 

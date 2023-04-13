@@ -1,10 +1,10 @@
 package com.example.instaserver.post.controller.dto.post;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class PostDeleteRequest {
-    @NotEmpty
+    @NotNull
     private Long id;
 }

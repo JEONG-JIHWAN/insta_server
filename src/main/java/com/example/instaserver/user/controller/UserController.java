@@ -8,6 +8,7 @@ import com.example.instaserver.user.controller.dto.UserDto;
 import com.example.instaserver.user.entity.User;
 import com.example.instaserver.user.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,21 +33,20 @@ public class UserController {
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto signUp(@ModelAttribute @Valid SignUpRequest signUpRequest) throws IOException {
-        return userService.join(signUpRequest);
+    public UserDto signUp(@ModelAttribute @Valid SignUpRequest signUpRequest, @RequestPart(value = "profile_image") MultipartFile multipartFile) throws IOException {
+        return userService.join(signUpRequest, multipartFile);
     }
 
     @GetMapping("/users/{id}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto profile(@PathVariable("id") Long id) {
+    public ProfileDto profile(@PathVariable("id")Long id) {
         return userService.getProfile(id);
     }
 
     @PutMapping("/users/profile")
-    public UserDto update(@CurrentUser User user, @ModelAttribute @Valid UpdateProfileRequest updateProfileRequest)
+    public UserDto update(@CurrentUser User user, @ModelAttribute @Valid UpdateProfileRequest updateProfileRequest, @RequestPart(value = "profile_image") MultipartFile multipartFile)
             throws IOException {
-        System.out.println("updateProfileRequest = " + updateProfileRequest.getNickname());
-        return userService.update(user, updateProfileRequest);
+        return userService.update(user, updateProfileRequest, multipartFile);
     }
 
 }

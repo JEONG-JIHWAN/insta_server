@@ -1,13 +1,14 @@
 package com.example.instaserver.user.controller.dto;
 
 import com.example.instaserver.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
 public class ProfileDto {
     private String nickname;
+    @JsonProperty("profile_image_url")
     private String profileImageUrl;
-
     private int follower;
     private int following;
 

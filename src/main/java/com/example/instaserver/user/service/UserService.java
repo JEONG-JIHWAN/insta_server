@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -24,9 +25,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDto join(SignUpRequest signUpRequest) throws IOException {
+    public UserDto join(SignUpRequest signUpRequest, MultipartFile newUserProfileImage) throws IOException {
+        Assert.isTrue(!newUserProfileImage.isEmpty(), "file is empty");
         String newUserNickname = signUpRequest.getNickname();
-        MultipartFile newUserProfileImage = signUpRequest.getProfile_image();
         checkDuplicateNickname(newUserNickname);
         String profileImageUrl = s3Client.uploadImage(newUserProfileImage);
         String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
@@ -38,9 +39,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto update(User user, UpdateProfileRequest updateProfileRequest) throws IOException {
+    public UserDto update(User user, UpdateProfileRequest updateProfileRequest, MultipartFile updateProfileImage) throws IOException {
+        Assert.notNull(user.getId(), "userId must be provided");
+        Assert.isTrue(!updateProfileImage.isEmpty(), "file is empty");
         User loginUser = getUser(user.getId());
-        String newProfileImageUrl = s3Client.uploadImage(updateProfileRequest.getProfileImage());
+        String newProfileImageUrl = s3Client.uploadImage(updateProfileImage);
         loginUser.update(updateProfileRequest.getNickname(), newProfileImageUrl);
         return new UserDto(loginUser);
     }

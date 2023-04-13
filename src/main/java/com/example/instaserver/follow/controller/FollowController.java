@@ -5,6 +5,7 @@ import com.example.instaserver.follow.controller.dto.FollowRequest;
 import com.example.instaserver.follow.controller.dto.FollowResponse;
 import com.example.instaserver.follow.service.FollowService;
 import com.example.instaserver.user.entity.User;
+import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,13 @@ public class FollowController {
 
     @PostMapping("/follow")
     @ResponseStatus(HttpStatus.OK)
-    public FollowResponse follow(@CurrentUser User user, @RequestBody FollowRequest followRequest) {
+    public FollowResponse follow(@CurrentUser User user, @RequestBody @Valid FollowRequest followRequest) {
         return followService.follow(user, followRequest.getUserId());
     }
 
     @DeleteMapping("/follow/cancel")
     @ResponseStatus(HttpStatus.OK)
-    public FollowResponse unFollow(@CurrentUser User user, @RequestBody FollowRequest cancelFollowRequest){
+    public FollowResponse unFollow(@CurrentUser User user, @RequestBody @Valid FollowRequest cancelFollowRequest){
         return followService.unFollow(user, cancelFollowRequest.getUserId());
     }
 }

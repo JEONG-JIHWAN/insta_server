@@ -30,7 +30,7 @@ public class ReplyService {
 
     @Transactional
     public ReplyResponse update(User user, ReplyUpdateRequest replyUpdateRequest) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Reply reply = getReply(replyUpdateRequest.getId());
         Assert.isTrue(user.getId() == reply.getUser().getId(), "해당 답글을 삭제할 수 없습니다. ");
         reply.updateContents(replyUpdateRequest.getContent());
@@ -39,11 +39,9 @@ public class ReplyService {
 
     @Transactional
     public ReplyDeleteDto delete(User user, ReplyDeleteDto replyDeleteDto) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(replyDeleteDto.getId(), "답글 Id가 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Reply reply = getReply(replyDeleteDto.getId());
         Assert.isTrue(user.getId() == reply.getUser().getId(), "해당 답글을 삭제할 수 없습니다. ");
-
         replyRepository.delete(reply);
         return new ReplyDeleteDto(reply.getId());
     }

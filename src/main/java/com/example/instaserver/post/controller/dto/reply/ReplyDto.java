@@ -1,6 +1,7 @@
 package com.example.instaserver.post.controller.dto.reply;
 
 import com.example.instaserver.post.entity.Reply;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
@@ -8,6 +9,7 @@ public class ReplyDto {
     private Long id;
     private String content;
     private String nickname;
+    @JsonProperty("profile_image_url")
     private String profileImageUrl;
 
     private ReplyDto(Long id, String content, String nickname, String profileImageUrl) {

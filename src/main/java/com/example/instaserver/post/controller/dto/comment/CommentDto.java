@@ -2,6 +2,7 @@ package com.example.instaserver.post.controller.dto.comment;
 
 import com.example.instaserver.post.controller.dto.reply.ReplyDto;
 import com.example.instaserver.post.entity.Comment;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -11,6 +12,7 @@ public class CommentDto {
     private Long id;
     private String content;
     private String nickname;
+    @JsonProperty("profile_image_url")
     private String profileImageUrl;
     private List<ReplyDto> replies;
 

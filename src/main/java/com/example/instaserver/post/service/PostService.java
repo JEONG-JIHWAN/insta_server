@@ -33,19 +33,12 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    private final ReplyRepository replyRepository;
     private final S3Client s3Client;
-    private final UserRepository userRepository;
-    private final EntityManager em;
     private final FollowRepository followRepository;
 
     @Transactional
     public PostResponse write(User user, PostRequest postRequest) throws IOException {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(postRequest.getContent(), "컨텐츠가 존재하지 않습니다.");
-        Assert.notNull(postRequest.getImage(), "이미지가 존재하지 않습니다.");
-
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         String postImageUrl = s3Client.uploadImage(postRequest.getImage());
         Post newPost = postRepository.save(new Post(user, postRequest.getContent(), postImageUrl));
         return PostResponse.from(newPost);
@@ -53,8 +46,7 @@ public class PostService {
 
     @Transactional
     public PostResponse update(User user, PostUpdateRequest postUpdateRequest) throws IOException {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(postUpdateRequest.getId(), "수정할 아이디가 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         String postImageUrl = s3Client.uploadImage(postUpdateRequest.getImage());
         Post post = getPost(postUpdateRequest.getId());
         Assert.isTrue(user.getId()==post.getUser().getId(), "해당 게시글을 수정할 수 없습니다.");
@@ -64,9 +56,7 @@ public class PostService {
 
     @Transactional
     public PostDeleteResponse delete(User user, PostDeleteRequest postDeleteRequest) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(postDeleteRequest.getId(), "수정할 아이디가 존재하지 않습니다.");
-
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Post post = getPost(postDeleteRequest.getId());
         Assert.isTrue(user.getId()==post.getUser().getId(), "해당 게시글을 삭제할 수 없습니다.");
         postRepository.delete(post);

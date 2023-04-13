@@ -23,8 +23,7 @@ public class CommentService {
 
     @Transactional
     public CommentResponse write(User user, CommentRequest commentRequest) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(commentRequest.getContent(), "컨텐츠가 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Post post = postService.getPost(commentRequest.getPostId());
         Comment newComment = commentRepository.save(new Comment(user, post, commentRequest.getContent()));
         return CommentResponse.from(newComment);
@@ -32,8 +31,7 @@ public class CommentService {
 
     @Transactional
     public CommentResponse update(User user, CommentUpdateRequest commentUpdateRequest) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(commentUpdateRequest.getId(), "해당 댓글이 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Comment comment = getComment(commentUpdateRequest.getId());
         Assert.isTrue(user.getId() == comment.getUser().getId(), "해당 댓글을 삭제 할 수 없습니다.");
         comment.updateContents(commentUpdateRequest.getContent());
@@ -42,8 +40,7 @@ public class CommentService {
 
     @Transactional
     public CommentDeleteDto delete(User user, CommentDeleteDto commentDeleteDto) {
-        Assert.notNull(user, "사용자가 존재하지 않습니다.");
-        Assert.notNull(commentDeleteDto.getId(), "해당 댓글이 존재하지 않습니다.");
+        Assert.notNull(user.getId(), "사용자가 존재하지 않습니다.");
         Comment comment = getComment(commentDeleteDto.getId());
         Assert.isTrue(user.getId() == comment.getUser().getId(), "해당 댓글을 삭제 할 수 없습니다.");
         commentRepository.delete(comment);

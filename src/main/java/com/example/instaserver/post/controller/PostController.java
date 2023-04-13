@@ -11,6 +11,7 @@ import com.example.instaserver.post.controller.dto.post.PostUpdateRequest;
 import com.example.instaserver.post.entity.Post;
 import com.example.instaserver.post.service.PostService;
 import com.example.instaserver.user.entity.User;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -34,24 +35,25 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping(path = "post")
-    public PostResponse posting(@CurrentUser User user, @ModelAttribute PostRequest postRequest) throws IOException {
+    public PostResponse posting(@CurrentUser User user, @ModelAttribute @Valid PostRequest postRequest) throws IOException {
         return postService.write(user, postRequest);
     }
 
     @PutMapping(path = "post")
-    public PostResponse updatePost(@CurrentUser User user, @ModelAttribute PostUpdateRequest postUpdateRequest)
+    public PostResponse updatePost(@CurrentUser User user, @ModelAttribute @Valid PostUpdateRequest postUpdateRequest)
             throws IOException {
         return postService.update(user, postUpdateRequest);
     }
 
     @DeleteMapping(path = "post")
-    public PostDeleteResponse deleteResponse(@CurrentUser User user, @RequestBody PostDeleteRequest postDeleteRequest) {
+    public PostDeleteResponse deleteResponse(@CurrentUser User user, @RequestBody @Valid PostDeleteRequest postDeleteRequest) {
         return postService.delete(user, postDeleteRequest);
     }
 
     @GetMapping(path = "feed")
-    public FeedResponse feed(@CurrentUser User user, @RequestBody FeedRequest feedRequest,
+    public FeedResponse feed(@CurrentUser User user, @RequestBody @Valid FeedRequest feedRequest,
                              @PageableDefault(size = PAGE_SIZE, sort = "updated_at", direction = Direction.DESC) Pageable pageable) {
+        System.out.println(feedRequest.getUserId());
         return postService.findPosts(user, feedRequest, pageable);
     }
 }

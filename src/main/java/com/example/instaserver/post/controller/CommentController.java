@@ -7,6 +7,7 @@ import com.example.instaserver.post.controller.dto.comment.CommentResponse;
 import com.example.instaserver.post.controller.dto.comment.CommentUpdateRequest;
 import com.example.instaserver.post.service.CommentService;
 import com.example.instaserver.user.entity.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,17 +23,17 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("comment")
-    public CommentResponse comment(@CurrentUser User user, @RequestBody CommentRequest commentRequest) {
+    public CommentResponse comment(@CurrentUser User user, @RequestBody @Valid CommentRequest commentRequest) {
         return commentService.write(user, commentRequest);
     }
 
     @PutMapping("comment")
-    public CommentResponse updateComment(@CurrentUser User user, @RequestBody CommentUpdateRequest commentUpdateRequest) {
+    public CommentResponse updateComment(@CurrentUser User user, @RequestBody @Valid CommentUpdateRequest commentUpdateRequest) {
         return commentService.update(user, commentUpdateRequest);
     }
 
     @DeleteMapping("comment")
-    public CommentDeleteDto deleteComment(@CurrentUser User user, @RequestBody CommentDeleteDto commentDeleteDto) {
+    public CommentDeleteDto deleteComment(@CurrentUser User user, @RequestBody @Valid CommentDeleteDto commentDeleteDto) {
         return commentService.delete(user, commentDeleteDto);
     }
 

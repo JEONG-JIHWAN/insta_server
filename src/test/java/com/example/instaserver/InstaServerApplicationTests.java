@@ -8,5 +8,6 @@ class InstaServerApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 }
